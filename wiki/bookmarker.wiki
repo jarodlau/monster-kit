@@ -1,3 +1,2 @@
-[http://www.google.co.jp Google]
-
+[http://www.google.co.jp Google]<BR>
 [http://bbs2.chinaunix.net/forumdisplay.php?fid=55 ChinaUnix Python]
