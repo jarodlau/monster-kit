@@ -1,7 +1,7 @@
 {{{
 Slax is good but need too many configuration....
 
-NetWork:
+[NetWork]
 ifconfig eth0 up
 ifconfig eth0 192.168.1.123
 route add default gw 192.168.1.1
@@ -11,8 +11,8 @@ nameserver 208.67.220.220
 nameserver 202.96.128.166     #ChinaDNS
 nameserver 202.96.128.86
 
-Chinese charset:
+[Chinese charset]
 
-Chinese Input Method:
+[Chinese Input Method]
 
 }}}
