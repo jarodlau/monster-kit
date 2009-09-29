@@ -1,0 +1,12 @@
+{{{
+
+[启动时自动运行的脚本]
+设置环境变量PYTHONSTARTUP
+
+[Tab键自动完成]
+import rlcompleter
+rlcompleter.readline.parse_and_bind('tab:complete')
+
+[py2exe]
+
+}}}
