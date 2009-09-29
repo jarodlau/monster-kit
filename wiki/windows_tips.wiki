@@ -1,0 +1,21 @@
+{{{
+[开机自动登录]
+rundll32 netplwiz.dll,UsersRunDll
+把‘登录需要xxx’去掉，然后提示输入自动登录时使用的用户名和密码，如果使用Administrator那首先先设置一下它的密码会比较安全
+
+[添加'Dos在这里'功能]
+把下面的内容保存到xxx.reg里运行就可以了
+
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\*\shell\Open_DOS_Box]
+@="DOS 在这里"
+[HKEY_CLASSES_ROOT\*\shell\Open_DOS_Box\command]
+@="CMD.EXE /K \"cd %L\""
+[HKEY_CLASSES_ROOT\Folder\shell\Open_DOS_Box]
+@="DOS 在这里"
+[HKEY_CLASSES_ROOT\Folder\shell\Open_DOS_Box\command]
+@="CMD.EXE /K \"cd %L\""
+
+
+}}}
