@@ -20,4 +20,7 @@ Windows Registry Editor Version 5.00
 [不保存最近打开文档]
 运行——gpedit.msc——用户配置——管理模板——任务栏和开始菜单——启用'不保存最近打开文档记录'
 
+[禁止Ping入]
+运行——gpedit.msc——计算机配置——Windows设置——安全设置——IP安全策略，在本地计算机——客户端(仅响应)
+
 }}}
