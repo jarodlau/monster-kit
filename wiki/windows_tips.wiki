@@ -5,17 +5,16 @@ rundll32 netplwiz.dll,UsersRunDll
 
 [添加'Dos在这里'功能]
 把下面的内容保存到xxx.reg里运行就可以了
-
-Windows Registry Editor Version 5.00
-
-[HKEY_CLASSES_ROOT\*\shell\Open_DOS_Box]
-@="DOS 在这里"
-[HKEY_CLASSES_ROOT\*\shell\Open_DOS_Box\command]
-@="CMD.EXE /K \"cd %L\""
-[HKEY_CLASSES_ROOT\Folder\shell\Open_DOS_Box]
-@="DOS 在这里"
-[HKEY_CLASSES_ROOT\Folder\shell\Open_DOS_Box\command]
-@="CMD.EXE /K \"cd %L\""
+        Windows Registry Editor Version 5.00
+        
+        [HKEY_CLASSES_ROOT\*\shell\Open_DOS_Box]
+        @="DOS 在这里"
+        [HKEY_CLASSES_ROOT\*\shell\Open_DOS_Box\command]
+        @="CMD.EXE /K \"cd %L\""
+        [HKEY_CLASSES_ROOT\Folder\shell\Open_DOS_Box]
+        @="DOS 在这里"
+        [HKEY_CLASSES_ROOT\Folder\shell\Open_DOS_Box\command]
+        @="CMD.EXE /K \"cd %L\""
 
 [不保存最近打开文档]
 运行——gpedit.msc——用户配置——管理模板——任务栏和开始菜单——启用'不保存最近打开文档记录'
