@@ -8,5 +8,6 @@ import rlcompleter
 rlcompleter.readline.parse_and_bind('tab:complete')
 
 [py2exe]
-
+bundle_files打包成一个文件的原理应该用的是"Loading a DLL from memory",但是模块部分还不知道是怎么load的，打包运行这部分还不太确定，并未仔细研究
+运行时解包是c代码，打包文件是python的代码，python25.dll应该是简单的附在run_w.exe的尾部，定位的时候似乎用到了一个11个字节长的特征字符串'<pythondll>'，打开最终生成的文件一眼睛就能认出来是py2exe的
 }}}
