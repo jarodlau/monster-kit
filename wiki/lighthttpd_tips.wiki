@@ -1,0 +1,10 @@
+{{{
+[CGI设置]
+server.modules += ("mod_cgi")
+cgi.assign                  = ( ".py" => "C:/python24/python.exe")
+server_root = "C:/LightTPD"
+alias.url = ( "/cgi-bin" => server_root + "/cgi-bin" )
+
+[FastCGI设置]
+
+}}}
