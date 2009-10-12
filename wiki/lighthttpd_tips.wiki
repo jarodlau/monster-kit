@@ -7,4 +7,13 @@ alias.url = ( "/cgi-bin" => server_root + "/cgi-bin" )
 
 [FastCGI设置]
 
+[CGI例子]
+import datetime,os
+
+print 'Content-type: text/html\n\n'
+print '<H1>Hello!</H1>'
+print 'Server time:', datetime.datetime.now()
+print '<BR>'
+print 'Client IP:',os.environ['REMOTE_ADDR']
+
 }}}
