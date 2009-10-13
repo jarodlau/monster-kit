@@ -11,22 +11,4 @@ rlcompleter.readline.parse_and_bind('tab:complete')
 bundle_files打包成一个文件的原理应该用的是"Loading a DLL from memory",源代码里的README-MemoryModule.txt有解释，至于最关键的import是怎么实现的呢？经过研究终于发现了它的秘密，这应该是py2exe的未解之谜，其实产生的exe文件是一个zipfile，而sys.path在运行时只有一条路径，那就是exe它自己，它自己不但是程序，更是一个模块存储中心，利用了python可以从zip文件里import的特性，并且py2exe还制作了一个自己的imort hook，在sys.path_hook里可以看到，大概看了一下好像是用来fix bug的，这都不重要了，最重要要记得两个关键点，一个是那篇txt文档，另一个就是exe其实就是zip，因此py2exe产生的exe相当不安全，必须自己搞一套自己的import，或者改进以下py2exe来点加密什么的
 python25.dll应该是简单的附在run_w.exe的尾部，定位的时候似乎用到了一个11个字节长的特征字符串'<pythondll>'，打开最终生成的文件一眼睛就能认出来是py2exe的
 
-[混淆器pyobfuscate]
-这个程序的关键之处我感觉是symtable，利用这个模块把目标代码解析一下然后处理。0.3版本不支持python2.5，主要是因为遇到调用函数的时候指定参数值就会出错，做以下改动之后就可以支持了，这样改完全是凭感觉，其实根本就没仔细研究，也懒得去看了能用就行，简单测试了一下OK，就暂时这样吧。这个程序还有很多地方有待提高，除了它的TODO里列出来的我感觉还有挺多可以做的
-编辑文件pyobfuscate
-Line552~Line554
-assert keyword[0] == token.NAME
-keyword_id = keyword[1]
-keyword_line = keyword[2]
-改为
-assert keyword[1][0] == token.NAME
-keyword_id = keyword[1][1]
-keyword_line = keyword[0]
-Line230
-functab = tab.lookup(id).get_namespace()
-改为
-try:
-  functab = tab.lookup(id).get_namespace()
-except:
-  return
 }}}
