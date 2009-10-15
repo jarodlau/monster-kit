@@ -17,4 +17,7 @@ python25.dll应该是简单的附在run_w.exe的尾部，定位的时候似乎�
 
 [pypy]
 在XP下没搞成功
+
+[pygame]
+pgu是个不错的GUI，很漂亮，可以和pygame联合编程，pgu的examples目录里有几个例子，grep pygame.event.get()可以到这样的例子
 }}}
