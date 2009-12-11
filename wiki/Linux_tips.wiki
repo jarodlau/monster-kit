@@ -15,4 +15,7 @@ nameserver 202.96.128.86
 
 [Chinese Input Method]
 
+[Encrypt file]
+openssl des3 -salt -in file.txt -out file.des3
+openssl des3 -d -salt -in file.des3 -out file.txt -k mypassword
 }}}
