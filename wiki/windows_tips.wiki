@@ -20,6 +20,20 @@ rundll32 netplwiz.dll,UsersRunDll
 运行——gpedit.msc——用户配置——管理模板——任务栏和开始菜单——启用'不保存最近打开文档记录'
 
 [禁止Ping入]
+这个办法还没测试过是不是真的好使
 运行——gpedit.msc——计算机配置——Windows设置——安全设置——IP安全策略，在本地计算机——客户端(仅响应)
 
+[Google浏览器启动就隐身]
+chrome.exe -incognito -start-maximized
+
+[扫描局域网有哪些机器]
+nmap.exe -sP 192.168.1.0/24
+
+[对抗P2P终结者]
+静态绑定网关的MAC地址即可
+arp -s 192.168.1.1 xx-xx-xx-xx-xx-xx
+
+[以别的用户运行程序]
+类似Linux的sudo -u
+runas /u:UserXXX "C:\Program Files\some_exe.exe"
 }}}
