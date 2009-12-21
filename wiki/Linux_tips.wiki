@@ -6,16 +6,25 @@ ifconfig eth0 up
 ifconfig eth0 192.168.1.123
 route add default gw 192.168.1.1
 vi /etc/resolv.conf:
+nameserver 8.8.8.8            #GoogleDNS
+nameserver 8.8.4.4
 nameserver 208.67.222.222     #openDNS
 nameserver 208.67.220.220
 nameserver 202.96.128.166     #ChinaDNS
 nameserver 202.96.128.86
 
 [Chinese charset]
+...
 
 [Chinese Input Method]
+...
 
 [Encrypt file]
 openssl des3 -salt -in file.txt -out file.des3
 openssl des3 -d -salt -in file.des3 -out file.txt -k mypassword
+
+[Live CD]
+DIY:Ubuntu command "remastersys"
+RelaxBSD
+
 }}}
