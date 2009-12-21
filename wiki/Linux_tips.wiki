@@ -24,7 +24,8 @@ openssl des3 -salt -in file.txt -out file.des3
 openssl des3 -d -salt -in file.des3 -out file.txt -k mypassword
 
 [Live CD]
-DIY:Ubuntu command "remastersys"
-RelaxBSD
+DIY tool: remastersys,UNetbootin
+Base system: X,Chinese,vim,python,lite web browser,E-Mail client,apt?
+Other:RelaxBSD
 
 }}}
