@@ -1,7 +1,5 @@
 {{{
-Slax is good but need too many configuration....
-
-[NetWork]
+[NetWork] Slax is good but need too many configuration....
 ifconfig eth0 up
 ifconfig eth0 192.168.1.123
 route add default gw 192.168.1.1
@@ -27,5 +25,37 @@ openssl des3 -d -salt -in file.des3 -out file.txt -k mypassword
 DIY tool: remastersys,UNetbootin
 Base system: X,Chinese,vim,python,lite web browser,E-Mail client,apt?
 Other:RelaxBSD
+
+[Install Ubuntu]
+首先安装基本系统
+- 下载ubuntu-9.10-alternate-i386.iso
+- 安装时按下F4，选择command line的安装，否则会非常大
+- 安装完大约用掉500M空间
+
+从光驱安装X(这样快)
+- sudo mount /media/cdrom0/ -o unhide
+- sudo cp /etc/apt/sources.list /etc/apt/sources.list.good
+- 清空文件/etc/apt/sources.list
+- 加入光盘为源 sudo apt-cdrom -m -d /media/cdrom0 add
+- 最后扫描源 sudo apt-get update
+- sudo apt-get install x-window-system-core
+
+- 将/etc/apt/sources.list.good替换回来(因为后面两个东西光盘里没有)
+- sudo apt-get install xdm
+- sudo apt-get install icewm
+- 用startx测试X
+
+- 不懂什么意思 sudo locale-gen zh_CN.UTF-8 zh_CN.GBK
+- 不懂什么意思 sudo apt-get install ttf-arphic-uming
+
+输入法
+- sudo apt-get install scim scim-pinyin
+- 在/etc/X11/xinit/xinitrc头几行添加scim -d&,目的是让scim随X一起启动
+- 在/etc/environment添加四行:LANGUAGE=en_US,LANG=zh_CN,XMODIFIERS="@im=SCIM",GTK_IM_MODULE="scim"，之后重新登陆
+
+浏览器
+- firefox
+
+到此，系统其实已经非常大了，Ubuntu就是这样，好用但臃肿，如果想定制小系统，依然要靠LFS
 
 }}}
