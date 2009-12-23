@@ -56,6 +56,10 @@ Other:RelaxBSD
 浏览器
 - firefox
 
-到此，系统其实已经非常大了，Ubuntu就是这样，好用但臃肿，如果想定制小系统，依然要靠LFS
+- 到此，系统其实已经非常大了，Ubuntu就是这样，好用但臃肿，如果想定制小系统，依然要靠LFS
 
+- 怎样切换桌面环境：ubuntu是没有switchdesk命令的，需要手动更改，cd /etc/alternatives,x-session-manager指向的就是当前startx调用的(/usr/bin/icewm-session,jwm,openbox....)
+
+[Slitaz LiveCD]
+为何小巧:busybox,leafpad编辑器,minefield浏览器,pcmanfm资源管理器,jwm/openbox窗口管理器
 }}}
