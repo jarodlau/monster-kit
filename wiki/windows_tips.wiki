@@ -36,4 +36,9 @@ arp -s 192.168.1.1 xx-xx-xx-xx-xx-xx
 [以别的用户运行程序]
 类似Linux的sudo -u
 runas /u:UserXXX "C:\Program Files\some_exe.exe"
+
+[mplayer]
+播放rm出错：如果是缺少drvc.dll，去www.dlldll.com下一个放到codecs目录下
+字幕乱码：在'选项'里设置'语言'为中文，然后选个中文字体
+
 }}}
