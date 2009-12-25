@@ -22,7 +22,7 @@ openssl des3 -salt -in file.txt -out file.des3
 openssl des3 -d -salt -in file.des3 -out file.txt -k mypassword
 
 [Live CD]
-DIY tool: remastersys,UNetbootin
+DIY tool: mksquashfs+lzma,remastersys,UNetbootin
 Base system: X,Chinese,vim,python,lite web browser,E-Mail client,apt?
 Other:RelaxBSD
 
@@ -59,13 +59,14 @@ Other:RelaxBSD
 
 - ****注意，到此系统其实已经非常大了(>1G)，Ubuntu就是这样，好用但臃肿，如果想定制小系统还是要想别的办法
 
-- 怎样切换桌面环境：ubuntu是没有switchdesk命令的，需要手动更改，cd /etc/alternatives,x-session-manager所指向的就是当前startx调用的(/usr/bin/icewm-session,jwm,openbox....)
+- 指定桌面管理器：ubuntu是没有switchdesk命令的，需要手动更改。cd /etc/alternatives,x-session-manager所指向的就是当前startx调用的(/usr/bin/icewm-session,jwm,openbox....)
 - 字符启动：安装rcconf，然后去掉xdm即可，反之则是图形启动，Ubuntu貌似没有inittab之说
 - python2.5：虽然有2.5可以安装，但貌似外围库都是for 2.6的
 
-[Slitaz LiveCD]
-优点：小巧，图形系统真实可用
-缺点：无中文，无python，有些工具是不需要的
+[Slitaz LiveCD] 目前看来是最小的一个，还算靠谱
+优点：小巧，图形系统真实可用，rootfs使用lzma
+缺点：无中文，无python，有些工具是不需要的，在虚拟机里启动时感觉grub部分很慢
 小巧工具:busybox,leafpad编辑器,minefield浏览器,pcmanfm资源管理器,jwm/openbox窗口管理器
 Hack:可以在slitaz的基础上打造自己的livecd,google"自己定制slitaz 系统"。貌似讲了两种方法，一种是利用标准命令制作，另一种是利用slitaz自带的工具命令来做
+
 }}}
