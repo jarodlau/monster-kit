@@ -38,7 +38,13 @@ arp -s 192.168.1.1 xx-xx-xx-xx-xx-xx
 runas /u:UserXXX "C:\Program Files\some_exe.exe"
 
 [mplayer]
+暴风影音等商业软件一般都有木马或广告，尽量不要用
 播放rm出错：如果是缺少drvc.dll，去www.dlldll.com下一个放到codecs目录下
 字幕乱码：在'选项'里设置'语言'为中文，然后选个中文字体
+
+[智能ABC]
+做为程序杀手：顺序输入v+左键+Delete+回车，当前等待输入的程序立刻挂掉
+如果有机密信息，尽量不使用搜狗输入法，感觉会自动上传个人信息
+
 
 }}}
