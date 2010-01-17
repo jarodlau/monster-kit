@@ -19,5 +19,8 @@ python25.dll应该是简单的附在run_w.exe的尾部，定位的时候似乎�
 在XP下没搞成功
 
 [pygame]
+pygame的缺点：打包后有十几M，而mingw编译的exe加上dll一起都不超过500k，pygame运行至少要13M内存，mingw的3M以下
+sdl的缺点：代码量太多，C语言写游戏要多悲剧有多悲剧
+mingw+sdl编译命令：c:\mingw\bin\gcc hello.c -lmingw32 -lSDLmain -lSDL(链接顺序很重要)
 pgu是个不错的GUI，很漂亮，可以和pygame联合编程，pgu的examples目录里有几个例子，grep pygame.event.get()可以到这样的例子
 }}}
