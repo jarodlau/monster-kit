@@ -29,6 +29,10 @@ character.set=134
 LC_CTYPE=en_US.UTF-8
 output.code.page=65001   #或者936
 
+取消对齐线：
+view.indentation.whitespace=0   #TAB对齐线
+view.indentation.guides=0       #括号对齐线
+
 <Q10>
 专心致志编辑器，名字很搞笑，启动以后全屏黑色，像回到了Linux字符终端，偶尔拿出来怀念一下Linux还不错，还没试过认真用
 
