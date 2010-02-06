@@ -23,6 +23,12 @@ Vim的改装版，挺好使，但使起来不怎么放心，毕竟是改装版�
 -中文支持不怎么好，我有个文件怎么都显示不出中文而editplus可以，编码格式是ISO-8859
 -python的代码提示感觉很弱智，先生成一个死文件python.api才可以使用，万一我新增了module怎么办哦，用python的自省方法dir(module name)即时列出来不行？
 
+中文配置：
+code.page=65001    #或者936
+character.set=134
+LC_CTYPE=en_US.UTF-8
+output.code.page=65001   #或者936
+
 <Q10>
 专心致志编辑器，名字很搞笑，启动以后全屏黑色，像回到了Linux字符终端，偶尔拿出来怀念一下Linux还不错，还没试过认真用
 
