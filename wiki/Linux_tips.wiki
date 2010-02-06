@@ -69,4 +69,8 @@ Other:RelaxBSD
 小巧工具:busybox,leafpad编辑器,minefield浏览器,pcmanfm资源管理器,jwm/openbox窗口管理器
 Hack:可以在slitaz的基础上打造自己的livecd,google"自己定制slitaz 系统"。貌似讲了两种方法，一种是利用标准命令制作，另一种是利用slitaz自带的工具命令来做
 
+[Nmap]
+nmap -sP 192.168.0.0/24         #Ping扫描
+nmap -P0 192.168.0.123          #
+
 }}}
