@@ -73,4 +73,10 @@ Hack:可以在slitaz的基础上打造自己的livecd,google"自己定制slitaz 
 nmap -sP 192.168.0.0/24         #Ping扫描
 nmap -P0 192.168.0.123          #
 
+[C语言函数调用图]
+1，下载graphviz（libgraphviz4）、pvtrace
+2，gcc -g -finstrument-functions test.c instrument.c -o test
+3, pvtrace test
+4, dot graph.dot -Tpng -o out.png
+
 }}}
