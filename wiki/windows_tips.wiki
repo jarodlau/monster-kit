@@ -46,5 +46,28 @@ runas /u:UserXXX "C:\Program Files\some_exe.exe"
 做为程序杀手：顺序输入v+左键+Delete+回车，当前等待输入的程序立刻挂掉
 如果有机密信息，尽量不使用搜狗输入法，感觉会自动上传个人信息
 
+[右键MD5]
+Hashtab     http://beeblebrox.org/
+
+[loop filesystem for windows]
+步骤说明http://prabhur.wordpress.com/2009/04/28/mount-ext2-loop-file-under-windows-environment/
+1. Download and Install ext2 driver for Windows, you can download it from http://www.fs-driver.org/download.html
+2. Download filedisk utility from http://www.acc.umu.se/~bosse/index.html
+3. Extract the filedisk zip file and copy the driver (chr/i386/filedisk.sys) to %systemroot%\system32\drivers\ and %systemroot%\system32\
+4. Double click on filedisk.reg to make registery entries (the filedisk.reg file can be imported if double click doesn’t work)
+5. Restart your machine.
+
+Usage
+In command prompt go to filedisk directory and use the following commands:
+1. filedisk /mount [size[k|M|G] | /ro | /cd]
+example: c:\filedisk>filedisk /mount 0 c:\loop\w3serv_01.02.1.loop f:
+You can see the loop file mounted as F: drive
+2. filedisk /umount
+example: c:\filedisk>filedisk /umount f:
+3. filedisk /status
+example: c:\filedisk>filedisk /status f:
+Alternatively by installing “ext2 driver for Windows” is useful to connect any external hard disk with ext2 file system to view it’s contents.
+以上是ext2的挂法，其实如果是NTFS或者Fat32就只需要filedisk这个工具就可以了
+
 
 }}}
