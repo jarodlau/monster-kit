@@ -16,6 +16,20 @@ rundll32 netplwiz.dll,UsersRunDll
         [HKEY_CLASSES_ROOT\Folder\shell\Open_DOS_Box\command]
         @="CMD.EXE /K \"cd %L\""
 
+[添加'file类型'功能]
+首先要安装file for windows，和Linux里的file命令类似
+然后类似上面的'Dos在这里'(一点点改动而已)，把下面的内容弄到注册表里
+	Windows Registry Editor Version 5.00
+
+	[HKEY_CLASSES_ROOT\*\shell\Open_file_cmd]
+	@="file类型"
+	[HKEY_CLASSES_ROOT\*\shell\Open_file_cmd\command]
+	@="CMD.EXE /K \"file.exe \"%L\"\""
+	[HKEY_CLASSES_ROOT\Folder\shell\Open_file_cmd]
+	@="file类型"
+	[HKEY_CLASSES_ROOT\Folder\shell\Open_file_cmd\command]
+	@="CMD.EXE /K \"file.exe \"%L\"\""
+
 [不保存最近打开文档]
 运行——gpedit.msc——用户配置——管理模板——任务栏和开始菜单——启用'不保存最近打开文档记录'
 
