@@ -83,5 +83,15 @@ example: c:\filedisk>filedisk /status f:
 Alternatively by installing “ext2 driver for Windows” is useful to connect any external hard disk with ext2 file system to view it’s contents.
 以上是ext2的挂法，其实如果是NTFS或者Fat32就只需要filedisk这个工具就可以了
 
+[squid2.7 statble8 for windows]
+http代理上网的简单工具
+首先把etc下的squid.conf和mime.conf准备好
+然后编辑squid.conf
+除了设置http_access allow all以及http_port 3128之外
+有时候启动不了可能是因为visible_hostname没设置
+如果连接不上可能要设置一下client_netmask或者检查squid所在机器有没有奇怪的防火墙
+默认squid只能放在c:\squid目录下，如果想放到别的目录，把squid.conf里的路径配置都改一下
+并且启动的时候要指定参数squid.exe -f c:/windows/xxxx/etc/squid.conf
+可以注册为系统服务的，有什么不确定的就看squid.exe -h
 
 }}}
