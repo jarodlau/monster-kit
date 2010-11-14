@@ -109,5 +109,102 @@ for i in range(60):
     # Now print the position and angle of the body.
     print body.position, body.angle		#angle是角度？
 
+[自动登陆论坛]
+登陆普通的论坛：比较简单，用pycurl可以轻松做到，比如下面的代码登陆linuxform.com
+import pycurl,urllib,StringIO,sys
+
+LF_URL = 'http://www.linuxforum.net/forum/start_page.php'
+UserName = 'uuuuuuuu'
+Password = 'xxxxxx'
+data = {
+	'Cat':'',
+	'Loginname':UserName,
+	'Loginpass':Password,
+	'firstlogin':'1',
+	'option':'登入论坛',
+        }
+urldata = urllib.urlencode(data)
+crl = pycurl.Curl()
+
+fd = open('linux-form.html', 'w')
+
+crl.setopt(pycurl.REFERER,'http://www.linuxforum.net/forum/login.php?Cat=')
+crl.setopt(pycurl.WRITEFUNCTION, fd.write)
+crl.setopt(crl.POSTFIELDS, urldata)
+crl.setopt(pycurl.URL, LF_URL)
+crl.setopt(pycurl.USERAGENT, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727)')
+
+#crl.setopt(pycurl.COOKIEJAR, 'cookie_lf.txt')
+crl.setopt(pycurl.COOKIEFILE, 'cookie_lf.txt')
+#crl.setopt(pycurl.COOKIE, 'cookie_lf.txt')
+#crl.setopt(crl.PROXY, "http://xxx.xxx.xxx.xxx:xxx")
+
+crl.perform()
+万能登陆法：用浏览器登陆，这样登陆是会产生一个浏览器界面的，就像用手在操作一样，有一些论坛的登陆form是用JS做了保护的(比如ChinaUnix)，如果代码不能处理JS那将不能登陆，用浏览器的话就任何论坛都可以登陆了，selenium这个工具是用来做web自动测试的，很厉害，下面是登录CU的例子，在别人代码基础上简单修改得来的
+SeleniumUtil.py
+from selenium import selenium
+
+class SeleniumUtil:
+  seleniums = {}
+  
+  def StartSeleniumForUrl(self, url):
+    sel = selenium("localhost", 4444,"*firefox", url)
+    sel.start()
+    sel.set_timeout("9000000")
+    return sel
+
+  def GetSelenium(self, websiteName, url):
+    #if websiteName in self.seleniums:
+     # return self.seleniums[websiteName]
+    self.seleniums[websiteName] = self.StartSeleniumForUrl(url)
+    return self.seleniums[websiteName]
+  
+  def StopSelenium(self, websiteName):
+    if websiteName in self.seleniums:
+      self.seleniums[websiteName].stop()
+
+my_login_cu.py
+import codecs,time
+from SeleniumUtil import SeleniumUtil
+
+ExchangeUrlMap = {
+  "CU": "http://sso.chinaunix.net/Login",
+  #"SHA_B": "http://stock.finance.sina.com.cn/stock/quote/shb%s.html",
+}
+#ExchangeXPath = "//html/body/div[4]/div/div[2]/div/table/tbody/tr[%s]/td[1]"
+ExchangeXPath = "//table/TBODY/tr[%s]/td[1]"
+
+
+class IfengFinanceSite:
+
+  # result file for diff exchanges
+  def GetAllTickers(self, exchange, resultFiles):
+    sln = SeleniumUtil().GetSelenium("Ifeng", "http://sso.chinaunix.net/")
+    myfile=codecs.open(resultFiles % exchange, "w", "utf-8")
+
+    count = 0
+
+    sln.open(ExchangeUrlMap[exchange])
+    #time.sleep(5)
+    sln.wait_for_page_to_load(0)
+    
+    print 'IMG:',sln.get_attribute('//body/div[3]/div/div/img@src')
+    print >> myfile, sln.get_html_source()
+    sln.type('login_name', 'peter')
+    sln.type('password', 'rose')
+    sln.click('btn_login')
+    sln.wait_for_page_to_load(0)
+    time.sleep(5)
+    sln.stop()
+   
+
+exchangelist=["CU"] #"SHA_A","SHA_B","SHE_A","SHE_B","SHA_Q","SHA_CEF","SHE_CEF","SHA_Bond","SHE_Bond"
+for exchange in exchangelist:    
+    print exchange
+    resultFiles="Ifeng_company_list_%s.txt"    
+    IfengFinanceSite().GetAllTickers(exchange, resultFiles)
+使用方法，启动服务器java -jar selenium-server.jar，然后python my_login_cu.py就可以了，可以很容易改进为自动灌水机
+
+制作这个登录器先后用到了几个有用的辅助工具，ieHTTPHeaders(在IE里可以查看http头，当初发现CU不能登陆的原因就是靠这个),firefox的web developer(这个工具能看到generated source，但是怎样用程序的办法将处理后的html拿到手还没研究出来),selenium(自动测试工具)
 
 }}}
