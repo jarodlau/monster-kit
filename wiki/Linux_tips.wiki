@@ -11,6 +11,14 @@ nameserver 208.67.220.220
 nameserver 202.96.128.166     #ChinaDNS
 nameserver 202.96.128.86
 
+如何定制自己的SLAX:
+1.mkdir old new,把SLAX.iso挂到目录old里
+2.cp -a old/* new/
+3.new/boot/slax.cfg修改这个文件，可以改变默认进入字符界面
+4.如果要启动sshd，那么把原来etc/rc.d/rc.sshd拷贝到slax/rootcopy/etc/rc.d/rc.sshd，并chmod a+x rc.sshd，rootcopy这个目录很有用，利用它可以修改SLAX的配置，这里启动sshd只是一个例子
+5.修改好了之后，制作一个新的iso，new/slax/makeiso.sh /tmp/abc.iso，abc.iso就是最终的成品
+99.定制的核心思想其实就在rootcopy目录
+
 [Chinese charset]
 ...
 
