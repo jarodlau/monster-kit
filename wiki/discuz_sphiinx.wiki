@@ -1,0 +1,34 @@
+2.安装discuz!X2
+(1)安装数据库和Web服务器
+sudo apt-get update
+sudo apt-get install apache2 mysql-server php5 php5-mysql php5-gd phpmyadmin
+(2)安装Zend框架
+sudo apt-get install zend-framework
+(3)下载Discuz安装包
+cd 
+mkdir discus
+wget  http://download.comsenz.com/DiscuzX/2.0/Discuz_X2_SC_UTF8.zip 
+(4)解压
+sudo apt-get install unzip
+unzip Discuz_X2_SC_UTF8.zip 
+(5)在/var/www下新建bbs目录，将前面解压出的upload目录下所有文件复制到 bbs目录中
+cp –a upload/* /var/www/bbs/
+(6) 给var中的www文件夹777属性，
+sudo chmod -R 777 /var/www 
+(7)打开浏览器，输入：
+ http://127.0.0.1/bbs/install/index.php
+开始安装discuz
+
+
+
+
+sudo apt-get install libmysqlclient-dev
+
+./configure --prefix=/usr/local/sphinx --with-mysql=/usr/ --with-mysql-includes=/usr/include/mysql/ --with-mysql-libs=/usr/lib/mysql/ --with-mmseg=/usr/local/mmseg/ --with-mmseg-includes=/usr/local/mmseg/include/mmseg/ --with-mmseg-libs=/usr/local/mmseg/lib/
+
+
+
+
+
+【转】 Discuz X1.5+Sphinx帖子全文检索功能搭建
+http://hi.baidu.com/slip2008/blog/item/28e752317478670aebc4af02.html
