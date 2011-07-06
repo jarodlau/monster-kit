@@ -32,3 +32,203 @@ sudo apt-get install libmysqlclient-dev
 
 【转】 Discuz X1.5+Sphinx帖子全文检索功能搭建
 http://hi.baidu.com/slip2008/blog/item/28e752317478670aebc4af02.html
+
+
+
+/usr/local/sphinx/etc/csft.conf  （30和50行有改动，这样改是不对的）
+#############################################################
+# Discuz! X1.5 + Coreseek/Sphinx Fulltext Search Config File
+# http://blog.2332.cn/files/sphinx/csft.conf
+#############################################################
+
+# Posts
+source posts
+{
+	type					= mysql
+
+	# some straightforward parameters for SQL source types
+	sql_host				= localhost
+	sql_user				= root
+	sql_pass				= toor
+	sql_db					= ultrax
+	sql_port				= 3306	# optional, default is 3306
+
+	sql_query_pre			= SET NAMES utf8
+	sql_query_pre			= SET SESSION query_cache_type=OFF
+
+	sql_query_pre            = REPLACE INTO sph_counter \
+		SELECT 1,MAX(pid) FROM pre_forum_post
+
+	sql_query				= \
+		SELECT p.pid AS id,p.tid,p.subject,p.message,t.digest,t.displayorder,t.authorid,t.lastpost,t.special \
+        FROM pre_forum_post AS p LEFT JOIN pre_forum_thread AS t USING(tid) \
+        WHERE p.pid>=$start AND p.pid<=$end
+		# WHERE pid<=(SELECT max_doc_id FROM sph_counter WHERE counter_id = 1)
+		
+	#sql_query_range = SELECT (SELECT MIN(pid) FROM pre_forum_post),max_doc_id FROM sph_counter WHERE counter_id=1
+	sql_query_range = SELECT MIN(pid),MAX(pid) FROM pre_forum_post
+	
+	sql_range_step          = 4096
+
+	sql_attr_uint            = tid
+    sql_attr_uint            = digest
+    sql_attr_uint            = displayorder
+    sql_attr_uint            = authorid
+    sql_attr_uint            = special
+	
+	sql_attr_timestamp      = lastpost
+
+	sql_query_info		= SELECT * FROM `pre_forum_post` WHERE pid=$id
+}
+
+source posts_minute: posts
+{
+	sql_query_pre            = SET NAMES utf8
+	sql_query_pre            = SET SESSION query_cache_type=OFF
+	#sql_query_range            = SELECT max_doc_id+1,(SELECT MAX(pid) FROM pre_forum_post) FROM sph_counter WHERE counter_id=1
+	sql_query_range            = SELECT MIN(pid),MAX(pid) FROM pre_forum_post
+}
+
+source posts_merge: posts_minute
+{
+	sql_query_pre            = SET NAMES utf8
+	sql_query_pre            = SET SESSION query_cache_type=OFF
+	sql_query_post		= REPLACE INTO sph_counter SELECT 1,MAX(pid) FROM pre_forum_post
+}
+
+index posts
+{
+	source			= posts
+	path			= /usr/local/sphinx/var/data/posts
+	docinfo			= extern
+	mlock			= 0
+	morphology		= none
+	min_word_len		= 2
+	charset_type		= zh_cn.utf-8
+	charset_dictpath = /usr/local/mmseg/etc/
+	html_strip				= 0
+}
+
+index posts_minute: posts
+{
+	source			= posts_minute
+	path			= /usr/local/sphinx/var/data/posts_minute
+}
+
+# must merge after run
+index posts_merge: posts
+{
+	source			= posts_merge
+	path			= /usr/local/sphinx/var/data/posts_merge
+}
+
+# Threads
+source threads
+{
+	type					= mysql
+
+	# some straightforward parameters for SQL source types
+	sql_host				= localhost
+	sql_user				= root
+	sql_pass				= toor
+	sql_db					= ultrax
+	sql_port				= 3306	# optional, default is 3306
+
+	sql_query_pre			= SET NAMES utf8
+	sql_query_pre			= SET SESSION query_cache_type=OFF
+	sql_query_pre            = REPLACE INTO sph_counter SELECT 2,MAX(tid) FROM pre_forum_thread
+
+	sql_query				= \
+		SELECT t.tid AS id,t.tid,t.subject,t.digest,t.displayorder,t.authorid,t.lastpost,t.special \
+		FROM pre_forum_thread as t \
+		WHERE closed = 0 AND t.tid>=$start AND t.tid<=$end
+	
+	sql_query_range            = SELECT (SELECT MIN(tid) FROM pre_forum_thread),max_doc_id FROM sph_counter WHERE counter_id=2
+	sql_range_step          = 4096
+	
+	sql_attr_uint            = tid
+    sql_attr_uint            = digest
+    sql_attr_uint            = displayorder
+    sql_attr_uint            = authorid
+    sql_attr_uint            = special
+
+    sql_attr_timestamp        =lastpost
+
+	sql_query_info		= SELECT * FROM `pre_forum_thread` WHERE tid=$id
+}
+
+source threads_minute: threads
+{
+	sql_query_pre            = SET NAMES utf8
+	sql_query_pre            = SET SESSION query_cache_type=OFF
+	sql_query_range            = SELECT max_doc_id+1,(SELECT MAX(tid) FROM pre_forum_thread) FROM sph_counter WHERE counter_id=2
+}
+
+# must merge after run
+source threads_merge: threads_minute
+{
+	sql_query_pre            = SET NAMES utf8
+	sql_query_pre            = SET SESSION query_cache_type=OFF
+	sql_query_post 		=  REPLACE INTO sph_counter SELECT 2,MAX(tid) FROM pre_forum_thread
+}
+
+index threads
+{
+	source			= threads
+	path			= /usr/local/sphinx/var/data/threads
+	docinfo			= extern
+	mlock			= 0
+	morphology		= none
+	min_word_len		= 2
+	charset_type		= zh_cn.utf-8
+	charset_dictpath = /usr/local/mmseg/etc/
+	html_strip				= 0
+}
+
+index threads_minute: threads
+{
+	source			= threads_minute
+	path			= /usr/local/sphinx/var/data/threads_minute
+}
+
+index threads_merge: threads
+{
+	source			= threads_merge
+	path			= /usr/local/sphinx/var/data/threads_merge
+}
+#############################################################################
+## indexer settings
+#############################################################################
+
+indexer
+{
+	mem_limit			= 64M
+}
+
+#############################################################################
+## searchd settings
+#############################################################################
+
+searchd
+{
+	# hostname, port, or hostname:port, or /unix/socket/path to listen on
+	# multi-value, multiple listen points are allowed
+	# optional, default is 0.0.0.0:3312 (listen on all interfaces, port 3312)
+	#
+	listen				= 0.0.0.0:3312
+	# listen			= /var/run/searchd.sock
+	log					= /usr/local/sphinx/var/log/searchd.log
+	query_log			= /usr/local/sphinx/var/log/query.log
+	read_timeout			= 5
+	client_timeout			= 10
+	max_children			= 30
+	pid_file			= /usr/local/sphinx/var/log/searchd.pid
+	max_matches			= 10000
+	seamless_rotate			= 1
+	preopen_indexes			= 0
+	unlink_old			= 1
+	mva_updates_pool		= 1M
+	max_packet_size			= 8M
+	max_filters			= 256
+	max_filter_values		= 4096
+}
