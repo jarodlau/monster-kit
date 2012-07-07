@@ -4,6 +4,10 @@
 <Editplus>
 Win下的首选，遗憾的是我从来没有将其配置成黑底色风格，据说是韩国小子写的
 
+<Notepad++>
+跟Scite有渊源,免费开源很好用,台湾朋友制作
+写python的时候按F5可以直接执行,在F5里面填上:cmd /k python "$(FULL_CURRENT_PATH)" & PAUSE & EXIT
+
 <jEdit>
 Linux下的首选，速度有点慢，Java的中文在有些系统上要费点神才行
 
