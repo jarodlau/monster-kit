@@ -56,6 +56,20 @@ runas /u:UserXXX "C:\Program Files\some_exe.exe"
 播放rm出错：如果是缺少drvc.dll，去www.dlldll.com下一个放到codecs目录下
 字幕乱码：在'选项'里设置'语言'为中文，然后选个中文字体
 
+[如何使SMPlayer不保存播放历史]
+打开SMPlayer目录下的smplayer.ini，找到[history]一项，修改两个max_items为0即可，如下：
+         [history]
+         recents=@Invalid()
+         recents\max_items=0
+         urls=@Invalid()
+         urls\max_items=0
+         
+         另外，[directories]中有保留最后一次打开的目录和DVD目录名，可以清空，如下：
+         
+         [directories]
+         latest_dir=
+         last_dvd_directory=
+
 [智能ABC]
 做为程序杀手：顺序输入v+左键+Delete+回车，当前等待输入的程序立刻挂掉
 如果有机密信息，尽量不使用搜狗输入法，感觉会自动上传个人信息
