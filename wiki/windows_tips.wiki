@@ -57,14 +57,14 @@ runas /u:UserXXX "C:\Program Files\some_exe.exe"
 字幕乱码：在'选项'里设置'语言'为中文，然后选个中文字体
 
 [如何使SMPlayer不保存播放历史]
-打开SMPlayer目录下的smplayer.ini，找到[history]一项，修改两个max_items为0即可，如下：
+打开SMPlayer目录下的smplayer.ini(没有就创建一个)，找到[history]一项，修改两个max_items为0即可，如下：
          [history]
          recents=@Invalid()
          recents\max_items=0
          urls=@Invalid()
          urls\max_items=0
          
-         另外，[directories]中有保留最后一次打开的目录和DVD目录名，可以清空，如下：
+         另外，[directories]中有保留最后一次打开的目录和DVD目录名，可以清空，如下(貌似不好使)：
          
          [directories]
          latest_dir=
