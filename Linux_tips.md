@@ -1,0 +1,91 @@
+
+```
+[NetWork] Slax is good but need too many configuration....
+ifconfig eth0 up
+ifconfig eth0 192.168.1.123
+route add default gw 192.168.1.1
+vi /etc/resolv.conf:
+nameserver 8.8.8.8            #GoogleDNS
+nameserver 8.8.4.4
+nameserver 208.67.222.222     #openDNS
+nameserver 208.67.220.220
+nameserver 202.96.128.166     #ChinaDNS
+nameserver 202.96.128.86
+
+如何定制自己的SLAX:
+1.mkdir old new,把SLAX.iso挂到目录old里
+2.cp -a old/* new/
+3.new/boot/slax.cfg修改这个文件，可以改变默认进入字符界面
+4.如果要启动sshd，那么把原来etc/rc.d/rc.sshd拷贝到slax/rootcopy/etc/rc.d/rc.sshd，并chmod a+x rc.sshd，rootcopy这个目录很有用，利用它可以修改SLAX的配置，这里启动sshd只是一个例子
+5.修改好了之后，制作一个新的iso，new/slax/makeiso.sh /tmp/abc.iso，abc.iso就是最终的成品
+99.定制的核心思想其实就在rootcopy目录
+
+[Chinese charset]
+...
+
+[Chinese Input Method]
+...
+
+[Encrypt file]
+openssl des3 -salt -in file.txt -out file.des3
+openssl des3 -d -salt -in file.des3 -out file.txt -k mypassword
+
+[Live CD]
+DIY tool: mksquashfs+lzma,remastersys,UNetbootin
+Base system: X,Chinese,vim,python,lite web browser,E-Mail client,apt?
+Other:RelaxBSD
+
+[Install Ubuntu]
+首先安装基本系统
+- 下载ubuntu-9.10-alternate-i386.iso
+- 安装时按下F4，选择command line的安装，否则会非常大
+- 安装完大约用掉500M空间
+
+从光驱安装X(这样快)
+- sudo mount /media/cdrom0/ -o unhide
+- sudo cp /etc/apt/sources.list /etc/apt/sources.list.good
+- 清空文件/etc/apt/sources.list
+- 加入光盘为源 sudo apt-cdrom -m -d /media/cdrom0 add
+- 最后扫描源 sudo apt-get update
+- sudo apt-get install x-window-system-core
+
+- 将/etc/apt/sources.list.good替换回来(因为后面两个东西光盘里没有)
+- sudo apt-get install xdm
+- sudo apt-get install icewm
+- 用startx测试X
+
+- 不懂什么意思 sudo locale-gen zh_CN.UTF-8 zh_CN.GBK
+- 不懂什么意思 sudo apt-get install ttf-arphic-uming
+
+输入法
+- sudo apt-get install scim scim-pinyin
+- 在/etc/X11/xinit/xinitrc头几行添加scim -d&,目的是让scim随X一起启动
+- 在/etc/environment添加四行:LANGUAGE=en_US,LANG=zh_CN,XMODIFIERS="@im=SCIM",GTK_IM_MODULE="scim"，之后重新登陆
+
+网络
+- firefox(非常大，可能是因为依赖的库太多)
+- openssh-server
+
+- ****注意，到此系统其实已经非常大了(>1G)，Ubuntu就是这样，好用但臃肿，如果想定制小系统还是要想别的办法
+
+- 指定桌面管理器：ubuntu是没有switchdesk命令的，需要手动更改。cd /etc/alternatives,x-session-manager所指向的就是当前startx调用的(/usr/bin/icewm-session,jwm,openbox....)
+- 字符启动：安装rcconf，然后去掉xdm即可，反之则是图形启动，Ubuntu貌似没有inittab之说
+- python2.5：虽然有2.5可以安装，但貌似外围库都是for 2.6的
+
+[Slitaz LiveCD] 目前看来是最小的一个，还算靠谱
+优点：小巧，图形系统真实可用，rootfs使用lzma
+缺点：无中文，无python，有些工具是不需要的，在虚拟机里启动时感觉grub部分很慢
+小巧工具:busybox,leafpad编辑器,minefield浏览器,pcmanfm资源管理器,jwm/openbox窗口管理器
+Hack:可以在slitaz的基础上打造自己的livecd,google"自己定制slitaz 系统"。貌似讲了两种方法，一种是利用标准命令制作，另一种是利用slitaz自带的工具命令来做
+
+[Nmap]
+nmap -sP 192.168.0.0/24         #Ping扫描
+nmap -P0 192.168.0.123          #
+
+[C语言函数调用图]
+1，下载graphviz（libgraphviz4）、pvtrace
+2，gcc -g -finstrument-functions test.c instrument.c -o test
+3, pvtrace test
+4, dot graph.dot -Tpng -o out.png
+
+```

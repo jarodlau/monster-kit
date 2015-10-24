@@ -1,0 +1,56 @@
+
+```
+写程序常用编辑器，记下来，省了忘记，提醒自己不要翻来覆去的使用不适合自己的工具，比如Emacs。不要过分追求编辑器，很幼稚，就像小时候追求一支漂亮的圆珠笔一样，重点不是工具。
+
+<Editplus>
+Win下的首选，遗憾的是我从来没有将其配置成黑底色风格，据说是韩国小子写的
+
+<Notepad++>
+跟Scite有渊源,免费开源很好用,台湾朋友制作
+写python的时候按F5可以直接执行,在F5里面填上:cmd /k python "$(FULL_CURRENT_PATH)" & PAUSE & EXIT
+
+<jEdit>
+Linux下的首选，速度有点慢，Java的中文在有些系统上要费点神才行
+
+中文显示不了：(同样适用于Freemind等Java程序)
+mkdir /usr/lib/jvm/java-6-sun/jre/lib/fonts/fallback
+cd /usr/lib/jvm/java-6-sun/jre/lib/fonts/fallback
+拷贝windows的simsun.ttc进去
+mkfontscale
+mkfontdir
+
+<Cream>
+Vim的改装版，挺好使，但使起来不怎么放心，毕竟是改装版，谁知道哪天会不会突然就没了，目前用的人确实不多
+
+<Scite>
+只简单用过一点点 
+优点：
+-速度快，编辑器我最看重这一点，呼之即来挥之即去
+-传统的多行缩进方式
+-能直接运行能pdb调试（但是要修改pdb.py）
+-配色还算容易
+
+缺点：
+-配置麻烦，得花时间学，学了又怕忘，当年Emace用的多溜啊，现在连怎么退出怎么打开文件都不记得了
+-中文支持不怎么好，我有个文件怎么都显示不出中文而editplus可以，编码格式是ISO-8859
+-python的代码提示感觉很弱智，先生成一个死文件python.api才可以使用，万一我新增了module怎么办哦，用python的自省方法dir(module name)即时列出来不行？
+
+中文配置：
+code.page=65001    #或者936
+character.set=134
+LC_CTYPE=en_US.UTF-8
+output.code.page=65001   #或者936
+
+取消对齐线：
+view.indentation.whitespace=0   #TAB对齐线
+view.indentation.guides=0       #括号对齐线
+
+<Q10>
+专心致志编辑器，名字很搞笑，启动以后全屏黑色，像回到了Linux字符终端，偶尔拿出来怀念一下Linux还不错，还没试过认真用
+
+<Vim>
+主要是Linux下修改配置文件时用，知道的命令绝不超过10条，对vi最坏的印象是它打开一个空文件会自动给加上一个字符，至今也不理解vi为什么要这样
+
+<Emacs>
+我只能跟孙子说“不，爷爷已经完全不会用了，但爷爷曾经使用过它。”
+```

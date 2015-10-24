@@ -1,0 +1,20 @@
+
+```
+
+[帆船]
+www.51hanghai.com  我要航海网
+
+[生存狂]
+百度贴吧:生存狂吧,野外生存吧
+http://www.oipsk.com/portal.php  猎人基地
+http://www.zhuangbei2012.com/    生存装备2012
+http://www.langmanzg.com/        浪漫烛光 生存狂之家
+
+[科技类]
+http://bbs.kechuang.org/         科创论坛
+http://songshuhui.net/           科学松鼠会
+
+
+
+
+```

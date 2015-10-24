@@ -1,0 +1,211 @@
+
+```
+
+[启动时自动运行的脚本]
+设置环境变量PYTHONSTARTUP
+
+[Tab键自动完成]
+import rlcompleter
+rlcompleter.readline.parse_and_bind('tab:complete')
+
+[py2exe]
+bundle_files打包成一个文件的原理应该用的是"Loading a DLL from memory",源代码里的README-MemoryModule.txt有解释，至于最关键的import是怎么实现的呢？经过研究终于发现了它的秘密，这应该是py2exe的未解之谜，其实产生的exe文件是一个zipfile，而sys.path在运行时只有一条路径，那就是exe它自己，它自己不但是程序，更是一个模块存储中心，利用了python可以从zip文件里import的特性，并且py2exe还制作了一个自己的imort hook，在sys.path_hook里可以看到，大概看了一下好像是用来fix bug的，这都不重要了，最重要要记得两个关键点，一个是那篇txt文档，另一个就是exe其实就是zip，因此py2exe产生的exe相当不安全，必须自己搞一套自己的import，或者改进以下py2exe来点加密什么的
+python25.dll应该是简单的附在run_w.exe的尾部，定位的时候似乎用到了一个11个字节长的特征字符串'<pythondll>'，打开最终生成的文件一眼睛就能认出来是py2exe的
+
+[freeze.py]
+在XP下尝试不成功，在cygwin下成功了,把python的源代码里的Tools\freeze目录拷贝到cygwin里(不拷也行，只是用来执行一下)，最重要是要把Python\frozenmain.c这个文件拷贝到hello.py同级目录，然后python ../freeze/freeze.py hello.py就会产生一大堆文件，然后make，应该是会出错，说找不到Py_FrozenMain，这时候把frozenmain.c编译成frozenmain.o，然后把frozenmain.o加到Makefile最下面那里，然后再make就行了
+顺便提一下，freeze.py产生的exe似乎很弱智，用编辑器打开看看里面全是python代码，所以用来提速还可以，用来保密暂时还不行
+
+[pypy]
+在XP下没搞成功
+
+[pygame]
+pygame的缺点：打包后有十几M，而mingw编译的exe加上dll一起都不超过500k，pygame运行至少要13M内存，mingw的3M以下
+sdl的缺点：代码量太多，C语言写游戏要多悲剧有多悲剧
+mingw+sdl编译命令：c:\mingw\bin\gcc hello.c -lmingw32 -lSDLmain -lSDL(链接顺序很重要)
+pgu是个不错的GUI，很漂亮，可以和pygame联合编程，pgu的examples目录里有几个例子，grep pygame.event.get()可以到这样的例子
+
+[pybox2d]
+官方helloworld的中文注释版
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+This is a simple example of building and running a simulation
+using Box2D. Here we create a large ground box and a small dynamic box.
+
+NOTE:
+There is no graphical output for this simple example, only text.
+"""
+ 
+from Box2D import *
+ 
+# Define the size of the world. Simulation will still work
+# if bodies reach the end of the world, but it will be slower.
+worldAABB=b2AABB()				#创建一个碰撞的世界
+worldAABB.lowerBound = (-100, -100)		#左边界、上边界
+worldAABB.upperBound = ( 100,  100)		#右边界、下边界
+
+#重力是用向量b2Vec2(x,y);来表示的，x代表水平运动，正数向右，负数向左，y代表垂直运动，正数向下，负数向上
+# Define the gravity vector.
+gravity = b2Vec2(0, -10)			#重力
+ 
+# Do we want to let bodies sleep?
+doSleep = True					#表示是否允许睡眠，为True的话，物体静止后就不进行计算了
+ 
+# Construct a world object, which will hold and simulate the rigid bodies.
+world = b2World(worldAABB, gravity, doSleep)	#用上面三个参数定义一个物理模拟世界
+
+# Define the ground body.
+groundBodyDef = b2BodyDef()			#定义刚体,在任何力的作用下，体积和形状都不发生改变的物体
+groundBodyDef.position = [0, -10]		#位置
+ 
+# Call the body factory which allocates memory for the ground body
+# from a pool and creates the ground box shape (also from a pool).
+# The body is also added to the world.
+groundBody = world.CreateBody(groundBodyDef)	#把刚体添加到模拟世界里去
+ 
+# Define the ground box shape.
+groundShapeDef = b2PolygonDef()			#创建一个多边形
+ 
+# The extents are the half-widths of the box.
+groundShapeDef.SetAsBox(50, 10)			#指定多边形宽度50、高度10
+ 
+# Add the ground shape to the ground body.
+groundBody.CreateShape(groundShapeDef)		#给刚体指定外型
+ 
+# Define the dynamic body. We set its position and call the body factory.
+bodyDef = b2BodyDef()				#定义另一个刚体
+bodyDef.position = (0, 4)
+body = world.CreateBody(bodyDef)
+ 
+# Define another box shape for our dynamic body.
+shapeDef = b2PolygonDef()
+shapeDef.SetAsBox(1, 1)
+ 
+# Set the box density to be non-zero, so it will be dynamic.
+shapeDef.density = 1				#密度,当密度为0的时候，物体是不会动的，相当于障碍物
+ 
+# Override the default friction.
+shapeDef.friction = 0.3				#摩擦力,摩擦力和弹力取值范围是0~1
+ 
+# Add the shape to the body.
+shape=body.CreateShape(shapeDef)
+ 
+# Now tell the dynamic body to compute it's mass properties base on its shape.
+body.SetMassFromShapes()			#根据面积自动计算质量，质量=面积*密度
+ 
+# Prepare for simulation. Typically we use a time step of 1/60 of a
+# second (60Hz) and 10 velocity/8 position iterations. This provides a 
+# high quality simulation in most game scenarios.
+timeStep = 1.0 / 60				#多长时间刷新一次
+vel_iters, pos_iters = 10, 8			#迭代次数，越大越精确但影响性能
+ 
+# This is our little game loop.
+for i in range(60):
+    # Instruct the world to perform a single step of simulation. It is
+    # generally best to keep the time step and iterations fixed.
+    world.Step(timeStep, vel_iters, pos_iters)
+ 
+    # Now print the position and angle of the body.
+    print body.position, body.angle		#angle是角度？
+
+[自动登陆论坛]
+登陆普通的论坛：比较简单，用pycurl可以轻松做到，比如下面的代码登陆linuxform.com
+import pycurl,urllib,StringIO,sys
+
+LF_URL = 'http://www.linuxforum.net/forum/start_page.php'
+UserName = 'uuuuuuuu'
+Password = 'xxxxxx'
+data = {
+	'Cat':'',
+	'Loginname':UserName,
+	'Loginpass':Password,
+	'firstlogin':'1',
+	'option':'登入论坛',
+        }
+urldata = urllib.urlencode(data)
+crl = pycurl.Curl()
+
+fd = open('linux-form.html', 'w')
+
+crl.setopt(pycurl.REFERER,'http://www.linuxforum.net/forum/login.php?Cat=')
+crl.setopt(pycurl.WRITEFUNCTION, fd.write)
+crl.setopt(crl.POSTFIELDS, urldata)
+crl.setopt(pycurl.URL, LF_URL)
+crl.setopt(pycurl.USERAGENT, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727)')
+
+#crl.setopt(pycurl.COOKIEJAR, 'cookie_lf.txt')
+crl.setopt(pycurl.COOKIEFILE, 'cookie_lf.txt')
+#crl.setopt(pycurl.COOKIE, 'cookie_lf.txt')
+#crl.setopt(crl.PROXY, "http://xxx.xxx.xxx.xxx:xxx")
+
+crl.perform()
+万能登陆法：用浏览器登陆，这样登陆是会产生一个浏览器界面的，就像用手在操作一样，有一些论坛的登陆form是用JS做了保护的(比如ChinaUnix)，如果代码不能处理JS那将不能登陆，用浏览器的话就任何论坛都可以登陆了，selenium这个工具是用来做web自动测试的，很厉害，下面是登录CU的例子，在别人代码基础上简单修改得来的
+SeleniumUtil.py
+from selenium import selenium
+
+class SeleniumUtil:
+  seleniums = {}
+  
+  def StartSeleniumForUrl(self, url):
+    sel = selenium("localhost", 4444,"*firefox", url)
+    sel.start()
+    sel.set_timeout("9000000")
+    return sel
+
+  def GetSelenium(self, websiteName, url):
+    #if websiteName in self.seleniums:
+     # return self.seleniums[websiteName]
+    self.seleniums[websiteName] = self.StartSeleniumForUrl(url)
+    return self.seleniums[websiteName]
+  
+  def StopSelenium(self, websiteName):
+    if websiteName in self.seleniums:
+      self.seleniums[websiteName].stop()
+
+my_login_cu.py
+import codecs,time
+from SeleniumUtil import SeleniumUtil
+
+ExchangeUrlMap = {
+  "CU": "http://sso.chinaunix.net/Login",
+  #"SHA_B": "http://stock.finance.sina.com.cn/stock/quote/shb%s.html",
+}
+#ExchangeXPath = "//html/body/div[4]/div/div[2]/div/table/tbody/tr[%s]/td[1]"
+ExchangeXPath = "//table/TBODY/tr[%s]/td[1]"
+
+
+class IfengFinanceSite:
+
+  # result file for diff exchanges
+  def GetAllTickers(self, exchange, resultFiles):
+    sln = SeleniumUtil().GetSelenium("Ifeng", "http://sso.chinaunix.net/")
+    myfile=codecs.open(resultFiles % exchange, "w", "utf-8")
+
+    count = 0
+
+    sln.open(ExchangeUrlMap[exchange])
+    #time.sleep(5)
+    sln.wait_for_page_to_load(0)
+    
+    print 'IMG:',sln.get_attribute('//body/div[3]/div/div/img@src')
+    print >> myfile, sln.get_html_source()
+    sln.type('login_name', 'peter')
+    sln.type('password', 'rose')
+    sln.click('btn_login')
+    sln.wait_for_page_to_load(0)
+    time.sleep(5)
+    sln.stop()
+   
+
+exchangelist=["CU"] #"SHA_A","SHA_B","SHE_A","SHE_B","SHA_Q","SHA_CEF","SHE_CEF","SHA_Bond","SHE_Bond"
+for exchange in exchangelist:    
+    print exchange
+    resultFiles="Ifeng_company_list_%s.txt"    
+    IfengFinanceSite().GetAllTickers(exchange, resultFiles)
+使用方法，启动服务器java -jar selenium-server.jar，然后python my_login_cu.py就可以了，可以很容易改进为自动灌水机
+
+制作这个登录器先后用到了几个有用的辅助工具，ieHTTPHeaders(在IE里可以查看http头，当初发现CU不能登陆的原因就是靠这个),firefox的web developer(这个工具能看到generated source，但是怎样用程序的办法将处理后的html拿到手还没研究出来),selenium(自动测试工具)
+
+```
